@@ -5,21 +5,32 @@ def main_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="📢 Promotions", callback_data="promotions")],
-            [InlineKeyboardButton(text="ℹ️ About", callback_data="about")],
+            [InlineKeyboardButton(text="📰 Updates", callback_data="updates")],
+            [InlineKeyboardButton(text="✍️ Submit Promotion", callback_data="submit")],
         ]
     )
 
 
-def promotion_menu() -> InlineKeyboardMarkup:
+def item_menu(prefix: str, count: int) -> InlineKeyboardMarkup:
+    rows = [
+        [InlineKeyboardButton(text=f"View {index + 1}", callback_data=f"{prefix}:{index}")]
+        for index in range(count)
+    ]
+    rows.append([InlineKeyboardButton(text="⬅️ Main Menu", callback_data="home")])
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def result_menu(retry_callback: str | None = None) -> InlineKeyboardMarkup:
+    rows = []
+    if retry_callback:
+        rows.append([InlineKeyboardButton(text="🔁 Run Again", callback_data=retry_callback)])
+    rows.append([InlineKeyboardButton(text="🏠 Main Menu", callback_data="home")])
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def submit_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="📋 Example Promotion", callback_data="example_promotion")],
-            [InlineKeyboardButton(text="⬅️ Back", callback_data="back_home")],
+            [InlineKeyboardButton(text="🏠 Main Menu", callback_data="home")],
         ]
-    )
-
-
-def back_menu() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text="⬅️ Back", callback_data="back_home")]]
     )
