@@ -8,7 +8,7 @@ from aiogram.exceptions import TelegramAPIError
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import BotCommand, CallbackQuery, Message
 
 from app.config import Settings
 from app.content import PROMOTIONS, UPDATES
@@ -221,6 +221,21 @@ async def main() -> None:
     logger.info("Starting Starz Promosyon bot")
 
     try:
+        await bot.set_my_commands(
+            [
+                BotCommand(command="start", description="Open the Starz Promosyon menu"),
+                BotCommand(command="help", description="Learn how the three functions work"),
+            ]
+        )
+        await bot.set_my_short_description(
+            "Telegram-native promotions, updates and promotion submissions."
+        )
+        await bot.set_my_description(
+            "Starz Promosyon is a Telegram-native promotion hub with three functions: "
+            "browse promotions, read in-app updates, and submit a promotion for consideration."
+        )
+        logger.info("Bot commands and profile description configured")
+
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)
     finally:
