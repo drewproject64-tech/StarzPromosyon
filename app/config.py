@@ -5,7 +5,8 @@ import os
 @dataclass(frozen=True)
 class Settings:
     bot_token: str
-    admin_id: int | None = None
+    admin_id: int | None
+    database_path: str
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -14,5 +15,13 @@ class Settings:
             raise RuntimeError("BOT_TOKEN environment variable is required")
 
         raw_admin = os.getenv("ADMIN_ID", "").strip()
-        admin_id = int(raw_admin) if raw_admin else None
-        return cls(bot_token=token, admin_id=admin_id)
+        try:
+            admin_id = int(raw_admin) if raw_admin else None
+        except ValueError as exc:
+            raise RuntimeError("ADMIN_ID must be a numeric Telegram user ID") from exc
+
+        database_path = os.getenv("DATABASE_PATH", "data/starz_promosyon.db").strip()
+        if not database_path:
+            database_path = "data/starz_promosyon.db"
+
+        return cls(token, admin_id, database_path)
