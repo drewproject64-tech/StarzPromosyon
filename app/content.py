@@ -7,38 +7,16 @@ class Item:
     body: str
 
 
+# Replace this example copy with real, current content before advertising.
 PROMOTIONS = (
-    Item(
-        "Featured promotions",
-        "Browse promotional opportunities published inside Starz Promosyon. "
-        "All details are shown here in Telegram; there is no external redirect.",
-    ),
-    Item(
-        "Campaign showcase",
-        "A campaign can include its title, purpose, audience and key details. "
-        "Use Submit Promotion if you want to send a promotion for consideration.",
-    ),
-    Item(
-        "Promotion guidelines",
-        "Keep submitted promotions clear, accurate and relevant. Do not include "
-        "passwords, payment credentials or other private information.",
-    ),
+    Item("Featured Promotion", "A featured promotion can be presented here with its offer, eligibility, validity period and key terms. Users can read the complete details in Telegram."),
+    Item("Campaign Information", "Use this section for a current campaign summary, including what is offered, who it is for and any important conditions."),
+    Item("Promotion Guidelines", "Submitted promotions should be clear, accurate and relevant. Do not include passwords, payment credentials or other private information."),
 )
 
+
 UPDATES = (
-    Item(
-        "Starz Promosyon",
-        "This bot is designed as a Telegram-native promotion information hub. "
-        "Its core content and navigation are available directly in the chat.",
-    ),
-    Item(
-        "In-app content",
-        "Promotional information and updates are presented as Telegram messages "
-        "and buttons, so users can read and navigate without leaving the bot.",
-    ),
-    Item(
-        "Submission flow",
-        "The submission form validates the message before saving it. A saved "
-        "submission receives a reference number for follow-up.",
-    ),
+    Item("Latest Starz Update", "Starz Promosyon keeps its core promotion information and updates available directly inside the bot."),
+    Item("In-App Experience", "Users can browse information, read updates and submit promotion text without being sent to an external website."),
+    Item("Submission Status", "Submitted promotion text is validated, saved locally and assigned a reference number so the submission can be identified later."),
 )
