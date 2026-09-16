@@ -9,7 +9,7 @@ from aiogram.exceptions import TelegramAPIError
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import BotCommand, CallbackQuery, Message
+from aiogram.types import BotCommand, CallbackQuery, ErrorEvent, Message
 
 from app.config import Settings
 from app.content import PROMOTIONS, UPDATES, Item
@@ -161,6 +161,22 @@ def build_dispatcher(storage: Storage, settings: Settings) -> Dispatcher:
             except TelegramAPIError:
                 logger.exception("Failed to notify admin about submission")
 
+    @dp.errors()
+    async def global_error(event: ErrorEvent) -> None:
+        logger.exception("Unhandled update error", exc_info=event.exception)
+        update = event.update
+        message = getattr(update, "message", None)
+        callback = getattr(update, "callback_query", None)
+        if callback is not None:
+            try:
+                await callback.answer("Something went wrong. Please try again.", show_alert=True)
+            except TelegramAPIError:
+                logger.exception("Failed to acknowledge callback after an error")
+        elif message is not None:
+            try:
+                await message.answer("Something went wrong. Please use /start to return to the main menu.")
+            except TelegramAPIError:
+                logger.exception("Failed to send user-facing error message")
     @dp.message()
     async def fallback(message: Message, state: FSMContext) -> None:
         if await state.get_state() == SubmitState.waiting_for_text:
